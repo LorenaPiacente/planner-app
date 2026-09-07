@@ -17,8 +17,12 @@
  *
  * SUMÁRIO (blocos, na ordem em que aparecem abaixo)
  *   1. Estado: chave de storage, formato inicial (loadState), variável
- *      `state`, e save() (grava no localStorage + no arquivo conectado)
- *   2. Arquivo de dados (File System Access API): abrir/criar/desconectar
+ *      `state`, e save() (grava no localStorage + no arquivo conectado
+ *      + no Firestore, se a pessoa estiver logada)
+ *   2. Sincronização com a nuvem (Firestore): quem é a pessoa logada,
+ *      carregar os dados dela ao entrar, e salvar com um pequeno atraso
+ *      (debounce) pra não escrever no banco a cada tecla digitada
+ *   3. Arquivo de dados (File System Access API): abrir/criar/desconectar
  *      um arquivo .json real, IndexedDB só pra lembrar qual arquivo foi
  *      escolhido da última vez, e a reconexão automática ao abrir o app
  * ========================================================= */
@@ -28,6 +32,7 @@ import { renderAll } from './nav.js';
 import { closeDaySettingsModal } from './modal.js';
 import { ensureMedsShape } from './medicamentos.js';
 import { todayISO, mondayOf } from './dates.js';
+import { loadStateFromCloud, saveStateToCloud } from './firebase.js';
 
 /* ---------- estado ---------- */
 export const STORAGE_KEY = 'meuPlanner:v1';
@@ -89,6 +94,37 @@ export let state = loadState();
 export function save(){
   try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }catch(e){ console.error('Falha ao salvar', e); }
   if(dataFileHandle){ writeStateToFile(); }
+  if(currentUid){
+    clearTimeout(cloudSaveTimer);
+    cloudSaveTimer = setTimeout(()=>{
+      saveStateToCloud(currentUid, state).catch(e=> console.error('Falha ao salvar na nuvem', e));
+    }, 800);
+  }
+}
+
+/* ---------- sincronização com a nuvem (Firestore) ---------- */
+let currentUid = null;
+let cloudSaveTimer = null;
+
+export async function syncOnLogin(uid){
+  currentUid = uid;
+  try{
+    const cloud = await loadStateFromCloud(uid);
+    if(cloud){
+      const base = loadState();
+      state = Object.assign(base, cloud);
+      if(state.weekShow) state.weekShow = Object.assign({}, base.weekShow, state.weekShow);
+      ensureMedsShape();
+      try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }catch(e){}
+    } else {
+      // primeiro login: sobe o que já existia localmente, pra não perder nada
+      await saveStateToCloud(uid, state);
+    }
+  }catch(e){ console.error('Falha ao sincronizar com a nuvem', e); }
+}
+export function clearCurrentUser(){
+  currentUid = null;
+  clearTimeout(cloudSaveTimer);
 }
 
 /* ---------- arquivo de dados (File System Access API) ---------- */

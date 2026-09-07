@@ -4,9 +4,10 @@
  * DESCRIÇÃO
  *   O ponto de entrada do app. Não define nenhuma função de área —
  *   só importa tudo que precisa rodar uma única vez ao carregar a
- *   página: a migração de formato antigo dos remédios, os cliques que
- *   só existem uma vez na tela (navegação principal, FAB, fechar
- *   modal clicando fora, o botão de arquivo de dados), o registro do
+ *   página: o controle de login (mostrar a tela de entrar ou o app),
+ *   a migração de formato antigo dos remédios, os cliques que só
+ *   existem uma vez na tela (navegação principal, FAB, fechar modal
+ *   clicando fora, o botão de arquivo de dados), o registro do
  *   service worker (PWA), e a primeira renderização.
  *
  * QUANDO É USADO
@@ -16,25 +17,50 @@
  *   (não recriados a cada renderização).
  *
  * SUMÁRIO (blocos, na ordem em que aparecem abaixo)
- *   1. Migração de dados antigos (remédios)
+ *   1. Login: observa se a pessoa está logada e mostra a tela de
+ *      entrar ou o app; ao logar, sincroniza com a nuvem e migra
+ *      dados antigos de remédios antes de desenhar a tela pela
+ *      primeira vez
  *   2. Clique na navegação principal (troca de área + reset de
  *      mês/dia quando aplicável)
  *   3. Botão flutuante (FAB) e fechar modais clicando fora
  *   4. Botão do arquivo de dados + banner de reconexão
  *   5. Registro do service worker (funcionamento offline)
- *   6. Primeira renderização e tentativa de reconexão automática do
- *      arquivo de dados
  * ========================================================= */
 
-import { state, save, FS_SUPPORTED, openFileModal, manualReconnectFile, tryAutoReconnectFile } from './state.js';
+import { state, save, FS_SUPPORTED, openFileModal, manualReconnectFile, tryAutoReconnectFile, syncOnLogin, clearCurrentUser } from './state.js';
 import { todayISO } from './dates.js';
 import { svgIcon } from './icons.js';
 import { openAddModal, closeAddModal, closeDaySettingsModal } from './modal.js';
 import { renderAll } from './nav.js';
 import { ensureMedsShape } from './medicamentos.js';
+import { onAuthChange, signInWithGoogle, signOutUser } from './firebase.js';
 
-/* ---------- migração de dados antigos ---------- */
-ensureMedsShape();
+/* ---------- login ---------- */
+document.getElementById('googleSignInBtn').addEventListener('click', ()=>{
+  signInWithGoogle().catch(e=> console.error('Falha ao entrar', e));
+});
+document.getElementById('signOutBtn').addEventListener('click', ()=>{
+  signOutUser().catch(e=> console.error('Falha ao sair', e));
+});
+
+onAuthChange(async (user)=>{
+  const loginScreen = document.getElementById('loginScreen');
+  const appShell = document.getElementById('appShell');
+  if(user){
+    loginScreen.classList.remove('show');
+    appShell.style.display = '';
+    document.getElementById('userEmailLabel').textContent = user.email || '';
+    await syncOnLogin(user.uid);
+    ensureMedsShape();
+    renderAll();
+    tryAutoReconnectFile();
+  } else {
+    clearCurrentUser();
+    appShell.style.display = 'none';
+    loginScreen.classList.add('show');
+  }
+});
 
 /* ---------- navegação principal ---------- */
 document.querySelectorAll('.snav-btn').forEach(btn=>{
@@ -77,7 +103,3 @@ if('serviceWorker' in navigator){
     navigator.serviceWorker.register('sw.js').catch(e=> console.error('Falha ao registrar service worker', e));
   });
 }
-
-/* ---------- partida ---------- */
-renderAll();
-tryAutoReconnectFile();

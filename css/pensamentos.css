@@ -1,0 +1,47 @@
+/* =========================================================
+ * ARQUIVO: css/pensamentos.css
+ * ---------------------------------------------------------
+ * DESCRIÇÃO
+ *   Estilos da seção de pensamentos e da seção de lembretes do dia (ambas dentro da visão Dia), e dos cards da página própria de Pensamentos (grade mensal). Atenção: a classe .thought-item aqui definida também é reaproveitada por outras áreas (categorias financeiras, lembretes semanais) — é o padrão genérico "texto + lápis + lixeira" usado em várias listas do app.
+ *
+ * QUANDO É USADO
+ *   Carregado sempre (pensamentos e lembretes aparecem na visão Dia).
+ *
+ * SUMÁRIO (blocos lógicos, na ordem em que aparecem abaixo)
+ *   1. Padrão genérico de item de lista (.thought-item: texto + editar + excluir) — reaproveitado em várias áreas
+ *   2. Cards da página Pensamentos (grade mensal, um card por pensamento)
+ *   3. Seção "Lembretes" do dia na visão Dia
+ * ========================================================= */
+
+/* ---------- thoughts ---------- */
+.thoughts{margin-top:16px;border-top:none;padding:16px;border-radius:var(--radius-md);background:var(--paper-alt);}
+.thoughts h3{margin:0 0 10px 0;font-size:.85rem;text-transform:uppercase;letter-spacing:.4px;color:var(--plum-dark);}
+.thought-item{display:flex;align-items:flex-start;gap:8px;padding:8px 12px;background:rgba(255,255,255,.6);border-radius:var(--radius-sm);margin-bottom:5px;}
+
+#pensCardsWrap{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;}
+.thought-card{
+  position:relative;background:var(--plum-tint);border-radius:var(--radius-md);padding:14px 16px 16px;
+  display:flex;flex-direction:column;gap:8px;
+}
+.thought-card .tc-date{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.3px;color:var(--plum-dark);opacity:.75;}
+.thought-card .tc-text{margin:0;font-size:.86rem;color:var(--ink);line-height:1.45;white-space:pre-wrap;word-break:break-word;}
+.thought-card .tc-actions{position:absolute;top:10px;right:10px;display:flex;gap:6px;}
+.thought-card .tc-actions .edit,.thought-card .tc-actions .rm{border:none;background:none;opacity:.5;font-size:.8rem;}
+.thought-card .tc-actions .rm{color:var(--rose);}
+.thought-card .tc-actions .edit:hover,.thought-card .tc-actions .rm:hover{opacity:1;}
+.thought-item:last-child{margin-bottom:0;}
+.thought-item .tdot{color:var(--sage);line-height:1.5;}
+.thought-item span.ttext{flex:1;font-size:.83rem;line-height:1.45;white-space:pre-wrap;}
+.thought-item input.ttext{
+  flex:1;border:none;border-bottom:1px dashed var(--line);background:transparent;
+  font-size:.83rem;outline:none;padding:2px 2px 3px;
+}
+.thought-item input.ttext:focus{border-bottom-color:var(--plum);}
+.thought-item .rm{border:none;background:none;color:var(--rose);opacity:.5;font-size:.9rem;padding:0 4px;}
+.thought-item .edit{border:none;background:none;opacity:.5;font-size:.82rem;padding:0 4px;}
+.thought-item .edit:hover{opacity:1;}
+.thought-item .rm:hover{opacity:1;}
+.reminders{margin-top:16px;border-top:none;padding:16px;border-radius:var(--radius-md);background:var(--plum-tint);}
+.reminders h3{margin:0 0 10px 0;font-size:.85rem;text-transform:uppercase;letter-spacing:.4px;color:var(--plum-dark);}
+.reminder-item input[type=checkbox]{accent-color:var(--sage);margin-top:2px;flex-shrink:0;}
+.reminder-item.done .ttext{text-decoration:line-through;color:var(--ink-soft);}

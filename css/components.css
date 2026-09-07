@@ -1,0 +1,50 @@
+/* =========================================================
+ * ARQUIVO: css/components.css
+ * ---------------------------------------------------------
+ * DESCRIÇÃO
+ *   Peças de interface reutilizadas em várias áreas do app: o botão flutuante (FAB) e o sistema de modal genérico (usado por toda ação de criar/editar).
+ *
+ * QUANDO É USADO
+ *   Carregado em toda página — qualquer tela que abra um modal ou use o FAB depende disto.
+ *
+ * SUMÁRIO (blocos lógicos, na ordem em que aparecem abaixo)
+ *   1. Botão flutuante (FAB) de adicionar
+ *   2. Overlay e folha do modal (abertura/fechamento, responsivo)
+ *   3. Cabeçalho do modal (título, botão fechar, botão voltar)
+ *   4. Grade de categorias do hub de adicionar
+ * ========================================================= */
+
+/* ---------- FAB + modal (hub de adicionar) ---------- */
+.fab-btn{
+  position:fixed;bottom:22px;right:20px;width:58px;height:58px;border-radius:50%;
+  background:var(--plum);color:#fff;font-size:1.8rem;border:none;
+  box-shadow:0 8px 20px rgba(90,75,120,.35);z-index:50;
+  display:none;align-items:center;justify-content:center;line-height:1;
+}
+.fab-btn.show{display:flex;}
+.fab-btn:hover{background:var(--plum-dark);}
+.modal-overlay{
+  position:fixed;inset:0;background:rgba(58,52,65,.4);z-index:60;
+  display:none;align-items:flex-end;justify-content:center;
+}
+.modal-overlay.show{display:flex;}
+.modal-sheet{
+  background:var(--card);width:100%;max-width:480px;border-radius:28px 28px 0 0;
+  padding:22px;max-height:85vh;overflow-y:auto;box-shadow:0 -8px 30px rgba(70,58,90,.2);
+}
+@media(min-width:640px){
+  .modal-overlay{align-items:center;}
+  .modal-sheet{border-radius:28px;}
+}
+.modal-header{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:18px;}
+.modal-header h3{margin:0;font-weight:800;font-size:1.05rem;color:var(--plum-dark);flex:1;text-align:center;}
+.modal-close{border:none;background:var(--paper-alt);width:28px;height:28px;border-radius:50%;font-size:1rem;color:var(--ink-soft);flex-shrink:0;}
+.modal-back{border:none;background:none;font-size:.8rem;color:var(--plum);font-weight:600;padding:0;flex-shrink:0;}
+.cat-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;}
+@media(max-width:380px){.cat-grid{grid-template-columns:1fr;}}
+.cat-btn{
+  border:none;background:var(--paper-alt);border-radius:var(--radius-md);padding:18px 10px;
+  display:flex;flex-direction:column;align-items:center;gap:6px;font-size:.8rem;font-weight:600;color:var(--ink);
+}
+.cat-btn:hover{background:var(--plum-tint);}
+.cat-btn .cat-icon{font-size:1.4rem;}

@@ -1,0 +1,70 @@
+/* =========================================================
+ * ARQUIVO: css/medicamentos.css
+ * ---------------------------------------------------------
+ * DESCRIÇÃO
+ *   Estilos da seção de medicação dentro da visão Dia, e da página própria de Medicamentos (cards mensais com o mini-calendário de doses).
+ *
+ * QUANDO É USADO
+ *   Carregado sempre (a seção de medicação aparece na visão Dia quando há remédio ativo).
+ *
+ * SUMÁRIO (blocos lógicos, na ordem em que aparecem abaixo)
+ *   1. Seção "Medicação" na visão Dia (nome, etiqueta de tipo, chips de dose por horário)
+ *   2. Cards da página Medicamentos (um por remédio, por mês)
+ *   3. Mini-calendário de adesão (dose completa/parcial/nenhuma) — versão em grade e versão linear (ciclo)
+ * ========================================================= */
+
+/* ---------- medicação ---------- */
+.meds{margin-top:16px;border-top:none;padding:16px;border-radius:var(--radius-md);background:var(--rose-tint);}
+.meds h3{margin:0 0 10px 0;font-size:.85rem;text-transform:uppercase;letter-spacing:.4px;color:#8A3E45;}
+.med-item{display:flex;flex-direction:column;gap:8px;padding:10px 12px;border-bottom:none;background:rgba(255,255,255,.55);border-radius:var(--radius-sm);margin-bottom:6px;}
+.med-item:last-child{margin-bottom:0;}
+.med-item-top{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.med-name{font-size:.83rem;font-weight:600;color:var(--ink);min-width:0;flex:1;}
+.med-tag{font-size:.6rem;color:#8A3E45;background:var(--card);padding:3px 9px;border-radius:var(--radius-pill);border:none;}
+.med-edit{border:none;background:none;opacity:.55;font-size:.72rem;flex-shrink:0;}
+.med-edit:hover{opacity:1;}
+.med-doses{display:flex;gap:12px;flex-wrap:wrap;}
+.dose-chip{display:flex;flex-direction:column;align-items:center;gap:3px;}
+.dose-time{font-family:var(--font-mono);font-size:.6rem;color:var(--ink-soft);}
+.dose-dot{
+  width:24px;height:24px;border-radius:50%;border:none;background:var(--card);color:transparent;
+  display:flex;align-items:center;justify-content:center;font-size:.7rem;flex-shrink:0;box-shadow:var(--shadow-sm);
+}
+.dose-dot.on{background:var(--sage);color:#fff;}
+.med-rm{border:none;background:none;color:var(--rose);font-size:.65rem;opacity:.5;margin-left:auto;}
+.med-rm:hover{opacity:1;}
+.med-add{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end;margin-top:12px;}
+.med-add input[type=text]{flex:1;min-width:140px;border:none;background:var(--card);border-radius:var(--radius-sm);padding:7px 10px;font-size:.78rem;}
+.med-add label{font-size:.68rem;color:#8A3E45;display:flex;flex-direction:column;gap:3px;}
+.med-add input[type=number],.med-add input[type=time],.med-add input[type=date],.med-add select{
+  border:none;background:var(--card);border-radius:var(--radius-sm);padding:7px 9px;font-size:.78rem;
+}
+.med-add input[type=number]{width:60px;}
+.med-empty{font-size:.75rem;color:#8A3E45;opacity:.7;font-style:italic;}
+
+/* ---------- página Medicamentos (por mês) ---------- */
+.med-month-card{background:var(--rose-tint);border-radius:var(--radius-md);padding:16px;margin-bottom:16px;}
+.med-month-header{display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap;}
+.med-month-header .med-name{font-size:.9rem;font-weight:700;color:var(--ink);flex:1;}
+.med-month-header .med-tag{font-size:.62rem;color:#8A3E45;background:var(--card);padding:3px 9px;border-radius:var(--radius-pill);}
+.med-month-header .edit,.med-month-header .rm{border:none;background:none;opacity:.55;font-size:.8rem;}
+.med-month-header .rm{color:var(--rose);}
+.med-month-header .edit:hover,.med-month-header .rm:hover{opacity:1;}
+.med-mini-grid{max-width:320px;}
+.med-mini-grid .mday.med-full{background:var(--sage);color:#fff;font-weight:700;}
+.med-mini-grid .mday.med-full:hover{background:var(--sage);color:#fff;}
+.med-mini-grid .mday.med-partial{background:var(--gold-tint);color:#8A6A1F;font-weight:700;border:2px solid #E0A93B;}
+.med-mini-grid .mday.med-none{background:var(--card);color:var(--ink-soft);}
+.med-linear-grid{display:flex;flex-wrap:wrap;gap:6px;}
+.med-linear-item{display:flex;flex-direction:column;align-items:center;gap:2px;}
+.med-linear-item .mli-dow{font-size:.6rem;color:var(--ink-soft);}
+.med-linear-item .mli-date{font-size:.55rem;color:var(--ink-soft);font-family:var(--font-mono);}
+.med-linear-grid .mday{
+  width:34px;height:34px;border-radius:50%;border:none;background:transparent;
+  font-size:.68rem;display:flex;align-items:center;justify-content:center;color:var(--ink);cursor:pointer;flex-shrink:0;
+}
+.med-linear-grid .mday:hover{background:var(--plum-tint);color:var(--plum-dark);}
+.med-linear-grid .mday.med-full{background:var(--sage);color:#fff;font-weight:700;}
+.med-linear-grid .mday.med-full:hover{background:var(--sage);color:#fff;}
+.med-linear-grid .mday.med-partial{background:var(--gold-tint);color:#8A6A1F;font-weight:700;border:2px solid #E0A93B;}
+.med-linear-grid .mday.med-none{background:var(--card);color:var(--ink-soft);}

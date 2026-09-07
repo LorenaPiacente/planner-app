@@ -1,0 +1,40 @@
+/* =========================================================
+ * ARQUIVO: css/nutricao.css
+ * ---------------------------------------------------------
+ * DESCRIÇÃO
+ *   Estilos da seção de nutrição dentro da visão Dia, e da página própria de Nutrição (histórico navegando por dia).
+ *
+ * QUANDO É USADO
+ *   Carregado sempre (a seção de nutrição aparece na visão Dia quando há refeição registrada).
+ *
+ * SUMÁRIO (blocos lógicos, na ordem em que aparecem abaixo)
+ *   1. Seção "Nutrição" na visão Dia (grupos por refeição, item de alimento)
+ *   2. Formulário rápido de adicionar alimento
+ *   3. Grupos de refeição na página própria de Nutrição (com botão de adicionar por refeição)
+ * ========================================================= */
+
+/* ---------- nutrição ---------- */
+.nutrition{margin-top:16px;border-top:none;padding:16px;border-radius:var(--radius-md);background:var(--gold-tint);}
+.nutrition h3{margin:0 0 10px 0;font-size:.85rem;text-transform:uppercase;letter-spacing:.4px;color:#8A6A1F;}
+.nutri-group{margin-bottom:12px;}
+.nutri-group-title{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.3px;color:#8A6A1F;margin-bottom:5px;}
+.nutri-item{display:flex;align-items:center;gap:8px;padding:6px 10px;background:rgba(255,255,255,.55);border-radius:var(--radius-sm);margin-bottom:4px;}
+.nutri-dot{color:#8A6A1F;flex-shrink:0;}
+.nutri-text{flex:1;font-size:.8rem;color:var(--ink);}
+.nutri-item .nedit,.nutri-item .rm{border:none;background:none;opacity:.5;font-size:.8rem;flex-shrink:0;}
+.nutri-item .nedit:hover,.nutri-item .rm:hover{opacity:1;}
+.nutri-item .rm:hover{opacity:1;}
+.nutri-empty{font-size:.72rem;color:#8A6A1F;opacity:.65;font-style:italic;}
+.nutri-add-form{display:none;gap:8px;flex-wrap:wrap;margin-top:12px;align-items:center;}
+.nutri-add-form.show{display:flex;}
+.nutri-add-form select{border:none;background:var(--card);border-radius:var(--radius-sm);padding:7px 9px;font-size:.8rem;}
+.nutri-add-form input[type=text]{flex:1;min-width:140px;border:none;background:var(--card);border-radius:var(--radius-sm);padding:7px 9px;font-size:.8rem;}
+/* ---------- página Nutrição (por dia) ---------- */
+.nutri-page-group{margin-bottom:16px;padding:14px;border-radius:var(--radius-md);background:var(--gold-tint);}
+.nutri-group-title-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.nutri-page-group .nutri-group-title{font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.3px;color:#8A6A1F;margin:0;}
+.nutri-add-mini{
+  border:none;background:var(--card);color:#8A6A1F;width:22px;height:22px;border-radius:50%;
+  font-size:.85rem;display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow-sm);
+}
+.nutri-add-mini:hover{background:#8A6A1F;color:#fff;}

@@ -1,0 +1,206 @@
+/* =========================================================
+ * ARQUIVO: css/calendario.css
+ * ---------------------------------------------------------
+ * DESCRIÇÃO
+ *   Estilos das 4 visões do calendário: Ano, Mês, Semana e Dia — incluindo a grade mensal, os cartões de dia, a agenda por horário, e os ajustes de responsividade específicos do calendário em telas estreitas.
+ *
+ * QUANDO É USADO
+ *   Carregado sempre — a seção Calendário é a tela inicial do app.
+ *
+ * SUMÁRIO (blocos lógicos, na ordem em que aparecem abaixo)
+ *   1. Visão Ano (grade de mini-calendários, numeração de semana)
+ *   2. Visão Mês (grade de dias, badge de itens, botão de adicionar por dia)
+ *   3. Visão Semana (cards por dia, lembretes da semana, seção Não realizadas)
+ *   4. Visão Dia (cabeçalho, agenda por horário, blocos de tarefa/evento)
+ *   5. Responsividade: ajustes da grade mensal em telas estreitas
+ * ========================================================= */
+
+/* ---------- year view ---------- */
+.year-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:18px;}
+@media(max-width:720px){.year-grid{grid-template-columns:repeat(2,minmax(0,1fr));}}
+@media(max-width:460px){.year-grid{grid-template-columns:1fr;}}
+.mini-month{border:none;border-radius:var(--radius-md);padding:14px;background:var(--paper-alt);}
+.mini-month button.mini-title{
+  all:unset;cursor:pointer;font-weight:700;color:var(--plum-dark);
+  font-size:.95rem;display:block;margin-bottom:8px;
+}
+.mini-month button.mini-title:hover{color:var(--rose);}
+.mini-grid{display:grid;grid-template-columns:18px repeat(7,minmax(0,1fr));gap:3px;text-align:center;align-items:center;}
+.mini-grid span{font-size:.6rem;color:var(--ink-soft);}
+.mini-grid .wk-corner{font-size:.55rem;color:var(--ink-soft);opacity:.5;}
+.mini-grid button{font-family:inherit;margin:0;}
+.mini-grid .wk-num{
+  border:none;background:transparent;font-size:.55rem;color:var(--ink-soft);
+  padding:2px 0;border-radius:var(--radius-pill);cursor:pointer;
+}
+.mini-grid .wk-num:hover{background:var(--plum-tint);color:var(--plum);}
+.mini-grid .mday{
+  border:none;background:transparent;width:100%;aspect-ratio:1;
+  font-size:.65rem;position:relative;color:var(--ink);cursor:pointer;
+  display:flex;align-items:center;justify-content:center;border-radius:50%;
+}
+.mini-grid button.mday:hover{background:var(--plum-tint);color:var(--plum-dark);}
+.mini-grid .mday.has-data::after{
+  content:'';position:absolute;bottom:2px;left:50%;transform:translateX(-50%);
+  width:3px;height:3px;border-radius:50%;background:var(--rose);
+}
+.mini-grid .mday.today{background:var(--rose);color:#fff;font-weight:700;}
+.mini-grid .mday.today:hover{background:var(--rose);color:#fff;}
+.mini-grid .mday.today.has-data::after{background:#fff;}
+.mini-grid .empty{visibility:hidden;cursor:default;}
+
+/* ---------- month view ---------- */
+.month-grid{display:flex;flex-direction:column;gap:6px;margin-top:16px;}
+.month-header-row{display:grid;grid-template-columns:minmax(0,1fr) repeat(7,minmax(0,1fr));gap:8px;}
+.month-week-row{
+  display:grid;grid-template-columns:minmax(0,1fr) repeat(7,minmax(0,1fr));gap:8px;
+  padding-bottom:10px;margin-bottom:4px;border-bottom:1px solid var(--line);
+}
+.month-week-row:last-child{border-bottom:none;padding-bottom:0;margin-bottom:0;}
+.month-corner{visibility:hidden;}
+.wk-remind-btn{
+  position:relative;border:none;background:var(--plum-tint);color:var(--plum);border-radius:var(--radius-sm);
+  display:flex;flex-direction:column;align-items:flex-start;gap:5px;cursor:pointer;min-height:88px;
+  padding:8px 9px;text-align:left;width:100%;
+}
+.wk-remind-btn:hover{background:var(--plum-tint);filter:brightness(.96);}
+.wk-remind-top{display:flex;align-items:center;justify-content:space-between;width:100%;}
+.wk-remind-icon{font-size:.85rem;}
+.wk-remind-badge{
+  background:var(--rose);color:#fff;font-size:.55rem;font-weight:700;
+  min-width:15px;height:15px;border-radius:50%;display:flex;align-items:center;justify-content:center;padding:0 2px;
+}
+.wk-remind-preview{display:flex;flex-direction:column;gap:1px;width:100%;overflow:hidden;}
+.wk-remind-preview .wrp-line{
+  font-size:.6rem;color:var(--plum-dark);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  line-height:1.3;
+}
+.wk-remind-preview .wrp-more{font-size:.58rem;color:var(--ink-soft);}
+.wk-remind-preview .wk-remind-done{text-decoration:line-through;opacity:.55;}
+.dow{text-align:center;font-size:.7rem;font-weight:700;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.4px;padding-bottom:4px;}
+.day-cell{
+  min-height:88px;border:none;border-radius:var(--radius-sm);background:var(--paper-alt);
+  padding:8px 9px;text-align:left;display:flex;flex-direction:column;gap:4px;
+  color:var(--ink);align-items:stretch;cursor:pointer;
+}
+.day-cell:hover{background:var(--plum-tint);}
+.day-cell.today{background:var(--rose-tint);}
+.dcell-top{display:flex;align-items:flex-start;justify-content:space-between;gap:4px;}
+.dcell-left{display:flex;align-items:center;gap:4px;}
+.day-cell .dnum{
+  border:none;background:transparent;padding:0;font-weight:700;font-size:.85rem;color:var(--plum-dark);cursor:pointer;
+}
+.day-cell .dnum:hover{color:var(--rose);}
+.dcell-badge{
+  background:var(--rose);color:#fff;font-size:.55rem;font-weight:700;
+  min-width:14px;height:14px;border-radius:50%;display:flex;align-items:center;justify-content:center;padding:0 2px;flex-shrink:0;
+}
+.dcell-add{
+  border:none;background:var(--card);color:var(--plum);width:18px;height:18px;border-radius:50%;
+  font-size:.68rem;line-height:1;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:var(--shadow-sm);
+}
+.dcell-add:hover{background:var(--plum);color:#fff;}
+.day-cell .dnote{
+  font-size:.68rem;color:var(--ink-soft);white-space:pre-wrap;overflow:hidden;overflow-wrap:break-word;word-break:break-word;
+  display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;flex:1;line-height:1.25;
+}
+.day-cell.empty{visibility:hidden;border:none;}
+
+/* ---------- week view ---------- */
+.week-nav-center{display:flex;align-items:center;gap:14px;}
+.week-nav-center .view-title{margin:0;}
+.week-range{color:var(--ink-soft);font-size:.85rem;margin:2px 0 16px 0;}
+.week-reminders{margin-top:18px;padding:16px;border-radius:var(--radius-md);background:var(--plum-tint);}
+.week-reminders h3{margin:0 0 10px 0;font-size:.85rem;text-transform:uppercase;letter-spacing:.4px;color:var(--plum-dark);}
+.week-reminders .add-row input{background:var(--card);}
+.day-week-reminders{margin-bottom:18px;padding:16px;border-radius:var(--radius-md);background:var(--plum-tint);}
+.day-week-reminders h3{margin:0 0 10px 0;font-size:.85rem;text-transform:uppercase;letter-spacing:.4px;color:var(--plum-dark);}
+.week-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:10px;}
+@media(max-width:900px){.week-grid{grid-template-columns:repeat(2,minmax(0,1fr));}}
+@media(max-width:520px){.week-grid{grid-template-columns:1fr;}}
+.week-day{border:none;border-radius:var(--radius-md);background:var(--paper-alt);padding:14px;display:flex;flex-direction:column;cursor:pointer;}
+.week-day.today{background:var(--rose-tint);}
+.wd-header{display:flex;align-items:flex-start;justify-content:space-between;gap:6px;}
+.wd-label-block{display:flex;flex-direction:column;}
+.week-day .wd-label{font-size:.72rem;font-weight:700;text-transform:uppercase;color:var(--plum-dark);letter-spacing:.3px;}
+.week-day .wd-num{font-size:1.1rem;font-weight:800;margin-bottom:8px;cursor:pointer;}
+.week-day .wd-num:hover{color:var(--rose);}
+.wd-add-btn{
+  border:none;background:var(--card);color:var(--plum);width:24px;height:24px;border-radius:50%;
+  font-size:.9rem;line-height:1;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;
+  box-shadow:var(--shadow-sm);
+}
+.wd-add-btn:hover{background:var(--plum);color:#fff;}
+.week-day-tasks{margin-top:8px;padding-top:0;border-top:none;display:flex;flex-direction:column;gap:5px;}
+.wdt-item{display:flex;align-items:center;gap:5px;font-size:.7rem;color:var(--ink);background:rgba(255,255,255,.6);border-radius:var(--radius-sm);padding:4px 7px;}
+.wdt-item input[type=checkbox]{accent-color:var(--sage);width:12px;height:12px;flex-shrink:0;}
+.wdt-item .wdt-text{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.wdt-item.done .wdt-text{text-decoration:line-through;color:var(--ink-soft);}
+.wdt-time{font-family:var(--font-mono);font-size:.58rem;color:var(--plum);flex-shrink:0;}
+.wdt-empty{font-size:.68rem;color:var(--ink-soft);opacity:.55;font-style:italic;}
+.wdt-group{display:flex;flex-direction:column;gap:4px;margin-bottom:8px;}
+.wdt-sub{border-top:none;padding-top:2px;}
+.wdt-sub-label{font-size:.58rem;text-transform:uppercase;letter-spacing:.3px;color:var(--ink-soft);margin-bottom:2px;}
+.week-settings-list{display:flex;flex-direction:column;gap:12px;}
+.week-settings-row{display:flex;align-items:center;gap:10px;font-size:.85rem;color:var(--ink);}
+.week-settings-row input{accent-color:var(--plum);width:16px;height:16px;flex-shrink:0;}
+
+/* ---------- day view ---------- */
+.day-view-top{display:flex;flex-direction:column;align-items:center;gap:8px;margin-bottom:8px;}
+.day-nav-center{display:flex;align-items:center;gap:16px;}
+.day-title-block{text-align:center;min-width:150px;}
+.day-title-block .view-title{margin:0;}
+.weekday-label{color:var(--ink-soft);font-size:.8rem;}
+.range-config{display:flex;align-items:center;gap:6px;font-size:.8rem;color:var(--ink-soft);}
+.range-config input{width:56px;border:none;background:var(--paper-alt);border-radius:var(--radius-sm);padding:6px 8px;font-size:.8rem;}
+
+.day-quote{
+  margin:16px 0 4px 0;padding:14px 18px;border-radius:var(--radius-md);background:var(--gold-tint);
+  border:none;font-style:italic;font-weight:500;
+  font-size:.95rem;color:#7a5c1f;
+}
+
+.priorities{margin:18px 0;}
+.priorities h3{margin:0 0 8px 0;font-size:.85rem;text-transform:uppercase;letter-spacing:.4px;color:var(--plum-dark);}
+.priority-chip{display:flex;align-items:center;gap:8px;padding:10px 14px;background:var(--gold-tint);border-radius:var(--radius-sm);border:none;margin-bottom:6px;}
+.priority-chip .ptext{flex:1;font-size:.85rem;}
+.priority-chip.done .ptext{text-decoration:line-through;color:var(--ink-soft);}
+.priority-chip .ptime{font-family:var(--font-mono);font-size:.65rem;color:var(--ink-soft);flex-shrink:0;}
+.priority-empty{font-size:.78rem;color:var(--ink-soft);opacity:.6;font-style:italic;}
+.star-btn{border:none;background:none;font-size:.9rem;color:var(--line);padding:0 3px;flex-shrink:0;line-height:1;}
+.star-btn.on{color:#E0A93B;}
+
+/* ---------- responsividade: calendário mensal em telas estreitas ---------- */
+@media(max-width:600px){
+  .month-grid{gap:4px;}
+  .month-header-row,.month-week-row{gap:4px;}
+  .dow{font-size:.6rem;}
+  .day-cell{min-height:60px;padding:5px 5px;gap:2px;}
+  .day-cell .dnum{font-size:.75rem;}
+  .dcell-badge{min-width:12px;height:12px;font-size:.5rem;}
+  .dcell-add{width:15px;height:15px;font-size:.6rem;}
+  .day-cell .dnote{font-size:.58rem;-webkit-line-clamp:2;}
+  .wk-remind-btn{padding:5px 4px;min-height:60px;gap:2px;}
+  .wk-remind-icon{font-size:.72rem;}
+  .wk-remind-preview{display:none;}
+}
+
+.file-status-btn{
+  position:absolute;right:0;top:0;border:none;background:var(--paper-alt);width:34px;height:34px;
+  border-radius:50%;font-size:1rem;opacity:.7;display:flex;align-items:center;justify-content:center;
+}
+.file-status-btn:hover{opacity:1;background:var(--plum-tint);}
+.file-status-btn.connected{opacity:1;}
+.file-status-btn.connected::after{
+  content:'';position:absolute;top:2px;right:2px;width:8px;height:8px;border-radius:50%;background:var(--sage);
+  border:2px solid var(--paper);
+}
+.reconnect-banner{
+  display:none;align-items:center;justify-content:space-between;gap:10px;
+  background:var(--rose-tint);color:#7a3038;padding:10px 20px;font-size:.78rem;
+  max-width:1100px;margin:8px auto 0;border-radius:var(--radius-md);
+}
+.reconnect-banner.show{display:flex;}
+.reconnect-banner button{
+  border:none;background:var(--rose);color:#fff;padding:6px 14px;border-radius:var(--radius-pill);font-size:.75rem;font-weight:600;flex-shrink:0;
+}

@@ -1,0 +1,53 @@
+/* =========================================================
+ * ARQUIVO: css/tarefas.css
+ * ---------------------------------------------------------
+ * DESCRIÇÃO
+ *   Estilos do seletor de recorrência (as 3 abas Diário/Mensal/Personalizado, usado tanto no hub de adicionar quanto na página Tarefas), da etiqueta de tarefa recorrente, da seção "Não realizadas" (Semana/Mês), e da página própria de Tarefas (Tarefas/Eventos/Recorrentes).
+ *
+ * QUANDO É USADO
+ *   Carregado sempre (o seletor de recorrência pode ser aberto do hub de adicionar em qualquer tela).
+ *
+ * SUMÁRIO (blocos lógicos, na ordem em que aparecem abaixo)
+ *   1. Etiqueta de tarefa recorrente e seção "Não realizadas" (Semana/Mês)
+ *   2. Seletor de recorrência: abas Diário/Mensal/Personalizado
+ *   3. Grade de dias da semana (Diário) e de dias do mês (Mensal)
+ *   4. Linha "a cada N dia/semana/mês/ano" (Personalizado)
+ *   5. Página Tarefas: seções recolhíveis (Tarefas/Eventos/Recorrentes) e linhas da lista
+ * ========================================================= */
+
+.recurring-tag{font-size:.62rem;color:var(--plum-dark);background:var(--plum-tint);padding:3px 8px;border-radius:var(--radius-pill);flex-shrink:0;white-space:nowrap;}
+.recurring-item.done .ttext{text-decoration:line-through;color:var(--ink-soft);}
+.missed-section{margin-top:16px;}
+.missed-toggle{background:var(--rose-tint);color:#7a3038;}
+.missed-row{color:var(--ink-soft);}
+.missed-row .tpr-text{text-decoration:line-through;}
+.time-btn{border:none;background:none;color:var(--plum);opacity:.6;font-size:.85rem;padding:0 3px;flex-shrink:0;}
+.time-btn:hover{opacity:1;}
+.inline-time{display:flex;gap:6px;align-items:center;margin-top:6px;width:100%;flex-basis:100%;}
+.inline-time select{border:none;background:var(--paper-alt);border-radius:var(--radius-sm);padding:4px 8px;font-size:.72rem;}
+.itOk{border:none;background:var(--plum);color:#fff;border-radius:var(--radius-pill);padding:4px 12px;font-size:.72rem;}
+.todo-item{flex-wrap:wrap;}
+
+/* ---------- página Tarefas ---------- */
+.task-page-section{margin-bottom:16px;}
+.task-page-toggle{
+  width:100%;display:flex;align-items:center;justify-content:space-between;border:none;
+  background:var(--paper-alt);border-radius:var(--radius-md);padding:14px 16px;font-size:.9rem;font-weight:700;
+  color:var(--plum-dark);cursor:pointer;
+}
+.tp-count{background:var(--plum-tint);color:var(--plum-dark);font-size:.72rem;font-weight:700;padding:2px 8px;border-radius:var(--radius-pill);margin-left:6px;}
+.tp-chevron{color:var(--ink-soft);}
+.task-page-list{padding:10px 4px 0;}
+.task-page-row{
+  display:flex;align-items:center;gap:10px;padding:9px 8px;border-bottom:1px dashed var(--line);font-size:.85rem;
+}
+.task-page-row:last-child{border-bottom:none;}
+.tpr-check{
+  width:18px;height:18px;border-radius:50%;border:2px solid var(--sage);background:transparent;flex-shrink:0;
+}
+.tpr-check:hover{background:var(--sage-tint);}
+.tpr-date{font-family:var(--font-mono);font-size:.72rem;color:var(--ink-soft);flex-shrink:0;width:44px;}
+.tpr-time{font-family:var(--font-mono);font-size:.72rem;color:var(--plum);flex-shrink:0;}
+.tpr-text{flex:1;color:var(--ink);}
+.tpr-goto{border:none;background:none;color:var(--ink-soft);font-size:1.1rem;flex-shrink:0;}
+.tpr-goto:hover{color:var(--plum);}
